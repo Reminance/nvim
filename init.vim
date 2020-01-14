@@ -1,8 +1,8 @@
-source ~/.vim/_auto_load.vim
-source ~/.vim/_machine_specific.vim
+source ~/.config/nvim/_auto_load.vim
+source ~/.config/nvim/_machine_specific.vim
 
 " Snippets
-source ~/.vim/snippets/_md_snippets.vim
+source ~/.config/nvim/snippets/_md_snippets.vim
 
 " ===================== Editor behavior =====================
 " set cursorline
@@ -35,7 +35,6 @@ set softtabstop=2
 set list
 set listchars=tab:▸\ ,trail:▫
 set scrolloff=8
-set tw=0*/
 set indentexpr=
 set backspace=indent,eol,start
 set foldmethod=indent
@@ -46,9 +45,6 @@ let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 set laststatus=2
 set autochdir
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-let g:SnazzyTransparent = 1
-color snazzy
 
 noremap <down> :res +5<CR>
 noremap <up> :res -5<CR>
