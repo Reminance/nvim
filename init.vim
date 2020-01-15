@@ -98,7 +98,7 @@ noremap s <nop>
 noremap S :w<CR>
 noremap Q :q<CR>
 noremap <C-q> :qa<CR>
-" noremap R :source $MYVIMRC<CR>
+noremap R :source $MYVIMRC<CR>
 
 " ===================== split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
 noremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
