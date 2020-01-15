@@ -98,7 +98,7 @@ noremap s <nop>
 noremap S :w<CR>
 noremap Q :q<CR>
 noremap <C-q> :qa<CR>
-noremap R :source $MYVIMRC<CR>
+" noremap R :source $MYVIMRC<CR>
 
 " ===================== split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
 noremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
@@ -266,7 +266,7 @@ let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
 let g:mkdp_open_to_the_world = 0
 let g:mkdp_open_ip = ''
-let g:mkdp_browser = 'Chromium Web Browser'
+let g:mkdp_browser = 'chromium'
 let g:mkdp_echo_preview_url = 0
 let g:mkdp_browserfunc = ''
 let g:mkdp_preview_options = {
@@ -285,7 +285,7 @@ let g:mkdp_page_title = '「${name}」'
 
 
 " todo Compile function
-" map r :call CompileRunGcc()<CR>
+noremap r :call CompileRunGcc()<CR>
 func! CompileRunGcc()
   exec "w"
   if &filetype == 'c'
@@ -308,18 +308,6 @@ func! CompileRunGcc()
     exec "MarkdownPreview"
   elseif &filetype == 'vimwiki'
     exec "MarkdownPreview"
-  endif
-endfunc
-
-
-" todo  calling markdown preview
-" map R :call CompileBuildrrr()<CR>
-func! CompileBuildrrr()
-  exec "w"
-  if &filetype == 'vim'
-    exec "source $MYVIMRC"
-  elseif &filetype == 'markdown'
-    exec "echo"
   endif
 endfunc
 
