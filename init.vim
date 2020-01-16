@@ -34,7 +34,7 @@ set shiftwidth=2
 set softtabstop=2
 set list
 set listchars=tab:▸\ ,trail:▫
-set scrolloff=8
+set scrolloff=16
 set indentexpr=
 set backspace=indent,eol,start
 set foldmethod=indent
@@ -266,7 +266,7 @@ let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
 let g:mkdp_open_to_the_world = 0
 let g:mkdp_open_ip = ''
-let g:mkdp_browser = 'chromium'
+let g:mkdp_browser = 'Chromium'
 let g:mkdp_echo_preview_url = 0
 let g:mkdp_browserfunc = ''
 let g:mkdp_preview_options = {
