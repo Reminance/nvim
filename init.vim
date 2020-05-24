@@ -34,7 +34,7 @@ set shiftwidth=2
 set softtabstop=2
 set list
 set listchars=tab:▸\ ,trail:▫
-set scrolloff=16
+set scrolloff=8
 set indentexpr=
 set backspace=indent,eol,start
 set foldmethod=indent
@@ -142,7 +142,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'connorholyday/vim-snazzy'
 
 " code complete
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 
 " File navigation
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -152,7 +152,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarOpenAutoClose' }
 
 " Error checking
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 
 "Plug 'francoiscabrol/ranger.vim'
 "Plug 'rbgrouleff/bclose.vim' " dependencies plug for ranger
@@ -183,7 +183,8 @@ Plug 'vim-scripts/indentpython.vim'
 
 " Markdown
 " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+"Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 Plug 'vimwiki/vimwiki'
 
@@ -192,7 +193,6 @@ Plug 'kshenoy/vim-signature'
 
 " Other useful utilities
 Plug 'terryma/vim-multiple-cursors'
-Plug 'junegunn/goyo.vim' " distraction free writing mode
 Plug 'tpope/vim-surround' " type ysks' to wrap the word with '' or type cs'` to change 'word' to `word`
 Plug 'godlygeek/tabular' " type ;Tabularize /= to align the =
 Plug 'gcmt/wildfire.vim' " in Visual mode, type i' to select all text in '', or type i) i] i} ip
@@ -260,8 +260,8 @@ let g:NERDTreeIndicatorMapCustom = {
 " ===
 " === ale
 " ===
-let b:ale_linters = ['pylint']
-let b:ale_fixers = ['autopep8', 'yapf']
+"let b:ale_linters = ['pylint']
+"let b:ale_fixers = ['autopep8', 'yapf']
 
 
 " ===
@@ -345,13 +345,6 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_color_change_percent = 1
 silent! unmap <LEADER>ig
 autocmd WinEnter * silent! unmap <LEADER>ig
-
-
-" ===
-" === Goyo
-" ===
-map <LEADER>gy :Goyo<CR>
-
 
 " ===
 " === vim-signiture
