@@ -1,4 +1,21 @@
-source ~/.config/nvim/_auto_load.vim
+source ~/.config/nvim/_auto_load.vim" ===
+" === Auto load for first time uses
+" ===
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+	silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+
+" ===
+" === Create a _machine_specific.vim file to adjust machine specific stuff, like python interpreter location
+" ===
+let has_machine_specific_file = 1
+if empty(glob('~/.config/nvim/_machine_specific.vim'))
+	let has_machine_specific_file = 0
+	silent! exec "!cp ~/.config/nvim/default_configs/_machine_specific_default.vim ~/.config/nvim/_machine_specific.vim"
+endif
 source ~/.config/nvim/_machine_specific.vim
 
 " Snippets
@@ -6,7 +23,7 @@ source ~/.config/nvim/snippets/_md_snippets.vim
 
 " ===================== Editor behavior =====================
 " set cursorline
-let mapleader=" "
+let mapleader=","
 exec "nohlsearch"
 syntax on
 set number
@@ -52,22 +69,26 @@ noremap <left> :vertical resize-5<CR>
 noremap <right> :vertical resize+5<CR>
 
 " ===================== Cursor Movement =====================
-"     ^
-"     k
-" < h   l >
-"     j
-"     v
 noremap H 5h
 noremap J 7j
 noremap K 7k
 noremap L 5l
 
-" ===================== Insert Mode Cursor Movement =====================
-inoremap <C-a> <ESC>A
+" ===================== Command Mode Cursor Movement =====================
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <M-b> <S-Left>
+cnoremap <M-w> <S-Right>
 
 " ===================== Basic Mappings =====================
 noremap <C-h> 0
 noremap <C-l> $
+inoremap <C-h> <ESC>0i
+inoremap <C-l> <ESC>$a
 
 noremap = nzz
 noremap - Nzz
@@ -91,8 +112,15 @@ inoremap <LEADER>q <esc>
 " Open the vimrc file anytime
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 
+" Open Startify
+"noremap <LEADER>st :Startify<CR>
+
 " Disable the default s key
 noremap s <nop>
+
+" Open up lazygit
+noremap \g :Git 
+noremap <c-g> :tabe<CR>:-tabmove<CR>:term lazygit<CR>
 
 " ===================== Save & quit =====================
 noremap S :w<CR>
@@ -112,11 +140,12 @@ noremap sm <C-w>t<C-w>H
 noremap sn <C-w>t<C-w>K
 
 " ===================== Rotate screens
-noremap srm <C-w>b<C-w>H
-noremap srn <C-w>b<C-w>K
+noremap srm <C-w>b<C-w>K
+noremap srn <C-w>b<C-w>H
 
 " ===================== Window management
-" Use <space> + new arrow keys for moving the cursor around windows
+" Use <LEADER> + new arrow keys for moving the cursor around windows
+noremap <LEADER>w <C-w>w
 noremap <LEADER>h <C-w>h
 noremap <LEADER>j <C-w>j
 noremap <LEADER>k <C-w>k
@@ -136,7 +165,7 @@ noremap tml :+tabmove<CR>
 " ===
 " ===================== Install Plugins with Vim-Plug start =====================
 " ===
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.nvim/plugged')
 
 Plug 'vim-airline/vim-airline'
 Plug 'connorholyday/vim-snazzy'
@@ -147,6 +176,9 @@ Plug 'connorholyday/vim-snazzy'
 " File navigation
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
+
+# fzf
+Plug 'junegunn/fzf.vim'
 
 " Taglist
 Plug 'majutsushi/tagbar', { 'on': 'TagbarOpenAutoClose' }
@@ -182,16 +214,27 @@ Plug 'mattn/emmet-vim'
 Plug 'vim-scripts/indentpython.vim'
 
 " Markdown
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
-"Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 Plug 'vimwiki/vimwiki'
 
+Plug 'easymotion/vim-easymotion'
+
+" Find & Replace
+Plug 'brooth/far.vim', { 'on': ['F', 'Far', 'Fardo'] }
+
 " Bookmarks
 Plug 'kshenoy/vim-signature'
 
+" Other visual enhancement
+Plug 'ryanoasis/vim-devicons'
+Plug 'luochen1990/rainbow'
+Plug 'mg979/vim-xtabline'
+Plug 'wincent/terminus'
+
 " Other useful utilities
+"Plug 'mhinz/vim-startify'
+Plug 'makerj/vim-pdf'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround' " type ysks' to wrap the word with '' or type cs'` to change 'word' to `word`
 Plug 'godlygeek/tabular' " type ;Tabularize /= to align the =
@@ -297,31 +340,48 @@ let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
 
 
-" todo Compile function
+
+" Compile function
 noremap r :call CompileRunGcc()<CR>
 func! CompileRunGcc()
-  exec "w"
-  if &filetype == 'c'
-    exec "!g++ % -o %<"
-    exec "!time ./%<"
-  elseif &filetype == 'cpp'
-    exec "!g++ % -o %<"
-    exec "!time ./%<"
-  elseif &filetype == 'java'
-    exec "!javac %"
-    exec "!time java %<"
-  elseif &filetype == 'sh'
-    :!time bash %
-  elseif &filetype == 'python'
-    silent! exec "!clear"
-    exec "!time python3 %"
-  elseif &filetype == 'html'
-    exec "!firefox % &"
-  elseif &filetype == 'markdown'
-    exec "MarkdownPreview"
-  elseif &filetype == 'vimwiki'
-    exec "MarkdownPreview"
-  endif
+	exec "w"
+	if &filetype == 'c'
+		exec "!g++ % -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'cpp'
+		set splitbelow
+		exec "!g++ -std=c++11 % -Wall -o %<"
+		:sp
+		:res -15
+		:term ./%<
+	elseif &filetype == 'java'
+		exec "!javac %"
+		exec "!time java %<"
+	elseif &filetype == 'sh'
+		:!time bash %
+	elseif &filetype == 'python'
+		set splitbelow
+		:sp
+		:term python3 %
+	elseif &filetype == 'html'
+		silent! exec "!".g:mkdp_browser." % &"
+	elseif &filetype == 'markdown'
+		exec "MarkdownPreview"
+	elseif &filetype == 'tex'
+		silent! exec "VimtexStop"
+		silent! exec "VimtexCompile"
+	elseif &filetype == 'dart'
+		CocCommand flutter.run -d iPhone\ 11\ Pro
+		CocCommand flutter.dev.openDevLog
+	elseif &filetype == 'javascript'
+		set splitbelow
+		:sp
+		:term export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
+	elseif &filetype == 'go'
+		set splitbelow
+		:sp
+		:term go run .
+	endif
 endfunc
 
 " ===
@@ -379,6 +439,24 @@ let g:SignatureMap = {
 " ===
 let g:undotree_DiffAutoOpen = 0
 map P :UndotreeToggle<CR>
+
+
+" ===
+" === rainbow
+" ===
+let g:rainbow_active = 1
+
+
+" ===
+" === xtabline
+" ===
+let g:xtabline_settings = {}
+let g:xtabline_settings.enable_mappings = 0
+let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
+let g:xtabline_settings.enable_persistance = 0
+let g:xtabline_settings.last_open_first = 1
+noremap to :XTabCycleMode<CR>
+noremap \p :XTabInfo<CR>
 
 " ===================== End of Plugin Settings =====================
 
