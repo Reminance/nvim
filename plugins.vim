@@ -24,7 +24,7 @@ source ~/.config/nvim/snippets/_md_snippets.vim
 " ===
 " ===================== Install Plugins with Vim-Plug start =====================
 " ===
-call plug#begin('~/.nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'vim-airline/vim-airline'
 Plug 'connorholyday/vim-snazzy'
@@ -197,7 +197,6 @@ let g:mkdp_markdown_css = ''
 let g:mkdp_highlight_css = ''
 let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
-
 
 
 " Compile function
